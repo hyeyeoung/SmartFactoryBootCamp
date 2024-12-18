@@ -21,5 +21,9 @@ namespace SmartFactoryBootCamp
         {
 
         }
+        private void botton_input_Click(object sender, EventArgs e)
+        {
+            textBox_result.Text = textBox_input.Text;
+        }
     }
 }
