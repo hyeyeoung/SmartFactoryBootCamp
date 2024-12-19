@@ -26,8 +26,7 @@ namespace SmartFactoryBootCamp
             Random random = new Random();
             int computerMake = random.Next();
             string resultComputer = (computerMake % 2 == 1).ToString();
-
-            if(inputCoin == "true" || inputCoin == "false")
+            if(inputCoin == "True" || inputCoin == "False")
             {
                 if (inputCoin == resultComputer)
                 {
@@ -65,11 +64,11 @@ namespace SmartFactoryBootCamp
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            textBox_input.Text = "true";
+            textBox_input.Text = true.ToString();
         }
         private void radioButton_false_CheckedChanged(object sender, EventArgs e)
         {
-            textBox_input.Text = "false";
+            textBox_input.Text = false.ToString();
         }
     }
 }
