@@ -31,7 +31,6 @@ namespace SmartFactoryBootCamp
             Friday, 
             Saturday,
             Sunday,
-            error
         }
         int theChoiceWeekday(string message){
             switch (message)
@@ -61,7 +60,6 @@ namespace SmartFactoryBootCamp
                 int input = theChoiceWeekday(textBox_input.Text);
                 switch (input)
                 {
-
                     case (int)Days.Monday:
                         textBox_result.Text = "심근경색 위험! 출근보다 침대가 내 건강을 더 생각한다.";
                         break;
