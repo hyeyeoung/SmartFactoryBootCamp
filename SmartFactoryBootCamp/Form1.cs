@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace SmartFactoryBootCamp
 {
@@ -15,36 +17,79 @@ namespace SmartFactoryBootCamp
         public Form1()
         {
             InitializeComponent();
-
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
-        int[] fakeScoreBoard(string theClassNumber)
+        int[,] fakeScoreBoard(int theClassNumberI)
         {
-            int theClassNumberI = int.Parse(theClassNumber);
-            int[] scoreBoard = new int[theClassNumberI];
+            int[,] scoreBoard = new int[3, theClassNumberI];
             Random random = new Random();
-            for (int i = 0; i < theClassNumberI; i++)
+
+            for(int i = 0; i < 3; i++)
             {
-                scoreBoard[i] = random.Next(0, 101); // 난수 입력
+                for (int j = 0; j < theClassNumberI; j++)
+                {
+                    scoreBoard[i, j] = random.Next(0, 101); // 난수 입력
+                }
             }
             return scoreBoard;
         }
         private void botton_input_Click(object sender, EventArgs e)
         {
-            if(textBox_input.Text.Length > 0)
+            int lengthScoreBoard = 0;
+            if (textBox_input.Text.Length > 0 && int.TryParse(textBox_input.Text, out lengthScoreBoard))
             {
-                int[] scoreBoard = fakeScoreBoard(textBox_input.Text);
-                int lengthScoreBoard = scoreBoard.Length;
-                string message = "";
-                for(int i = 0; i<lengthScoreBoard; i++)
+                // = int.Parse(textBox_input.Text);
+                int[,] scoreBoard = fakeScoreBoard(lengthScoreBoard);
+                dataGridView1.Columns.Add("Korean", "국어");
+                dataGridView1.Columns.Add("English", "영어");
+                dataGridView1.Columns.Add("Math", "수학");
+                for(int i = 0; i <lengthScoreBoard; i++)
                 {
-                    message += "학생" + (i + 1).ToString() + "의 점수: " + scoreBoard[i].ToString() + "점\r\n";
+                    dataGridView1.Rows.Add();
+
+                    dataGridView1["Korean", i].Value = scoreBoard[0, i];
+                    dataGridView1["English", i].Value = scoreBoard[1, i];
+                    dataGridView1["Math", i].Value = scoreBoard[2, i];
                 }
-                textBox_result.Text = message;
+            }
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog(); // 파일 저장 객체
+            sfd.Filter = "csv (*.csv)|*.csv"; // 파일 확장자 필터
+            sfd.InitialDirectory = "C:\\Users\\thfl9\\OneDrive\\바탕 화면\\스팩\\강의 자료"; // 저장 경로
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                using (StreamWriter sw = new StreamWriter(sfd.FileName))
+                {
+                    // 헤더 작성
+                    for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                    {
+                        sw.Write(dataGridView1.Columns[i].HeaderText);
+                        if (i < dataGridView1.Columns.Count - 1)
+                            sw.Write(","); // 열 구분자
+                    }
+                    sw.WriteLine(); // 줄바꿈
+
+                    // 데이터 작성
+                    foreach (DataGridViewRow row in dataGridView1.Rows) // 데이터 입력
+                    {
+                        if (!row.IsNewRow) // 새 행이 아니면 저장
+                        {
+                            for (int i = 0; i < dataGridView1.Columns.Count; i++)
+                            {
+                                sw.Write(row.Cells[i].Value?.ToString());
+                                if (i < dataGridView1.Columns.Count - 1)
+                                    sw.Write(","); // 열 구분자
+                            }
+                            sw.WriteLine(); // 줄바꿈
+                        }
+                    }
+                }
             }
         }
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
@@ -53,5 +98,7 @@ namespace SmartFactoryBootCamp
         private void radioButton_false_CheckedChanged(object sender, EventArgs e)
         {
         }
+
+
     }
 }
