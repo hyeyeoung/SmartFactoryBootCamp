@@ -27,13 +27,20 @@ namespace SmartFactoryBootCamp
         {
             int[,] scoreBoard = new int[3, theClassNumberI];
             Random random = new Random();
-
-            for(int i = 0; i < 3; i++)
+            int i = 0;
+            while(i < 3)
             {
-                for (int j = 0; j < theClassNumberI; j++)
+                int j = 0;
+                while (true)
                 {
-                    scoreBoard[i, j] = random.Next(0, 101); // 난수 입력
+                    if (j >= theClassNumberI)
+                    {
+                        break;
+                    }
+                    scoreBoard[i, j] = random.Next(0, 101);
+                    j++;
                 }
+                i++;
             }
             return scoreBoard;
         }
@@ -47,13 +54,14 @@ namespace SmartFactoryBootCamp
                 dataGridView1.Columns.Add("Korean", "국어");
                 dataGridView1.Columns.Add("English", "영어");
                 dataGridView1.Columns.Add("Math", "수학");
-                for(int i = 0; i <lengthScoreBoard; i++)
+                int i = 0;
+                while(i < lengthScoreBoard)
                 {
                     dataGridView1.Rows.Add();
-
                     dataGridView1["Korean", i].Value = scoreBoard[0, i];
                     dataGridView1["English", i].Value = scoreBoard[1, i];
                     dataGridView1["Math", i].Value = scoreBoard[2, i];
+                    i++;
                 }
             }
         }
