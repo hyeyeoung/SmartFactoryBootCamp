@@ -46,7 +46,7 @@
             // 
             // rock
             // 
-            this.rock.Location = new System.Drawing.Point(131, 12);
+            this.rock.Location = new System.Drawing.Point(147, 12);
             this.rock.Name = "rock";
             this.rock.Size = new System.Drawing.Size(75, 23);
             this.rock.TabIndex = 1;
@@ -56,7 +56,7 @@
             // 
             // papper
             // 
-            this.papper.Location = new System.Drawing.Point(250, 12);
+            this.papper.Location = new System.Drawing.Point(273, 12);
             this.papper.Name = "papper";
             this.papper.Size = new System.Drawing.Size(75, 23);
             this.papper.TabIndex = 2;
@@ -69,7 +69,8 @@
             this.resultBox.Location = new System.Drawing.Point(12, 59);
             this.resultBox.Multiline = true;
             this.resultBox.Name = "resultBox";
-            this.resultBox.Size = new System.Drawing.Size(327, 115);
+            this.resultBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.resultBox.Size = new System.Drawing.Size(336, 219);
             this.resultBox.TabIndex = 3;
             this.resultBox.TextChanged += new System.EventHandler(this.resultBox_TextChanged);
             // 
@@ -77,7 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(351, 200);
+            this.ClientSize = new System.Drawing.Size(360, 290);
             this.Controls.Add(this.resultBox);
             this.Controls.Add(this.papper);
             this.Controls.Add(this.rock);

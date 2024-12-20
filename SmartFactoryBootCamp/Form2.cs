@@ -74,6 +74,9 @@ namespace SmartFactoryBootCamp
                 {
                     resultBox.Text += "무승부\r\n";
                 }
+                resultBox.Text += "---------------------------\r\n";
+                use_win = 0;
+                computer_win = 0;
             }
         }
         private void scissors_Click(object sender, EventArgs e)
