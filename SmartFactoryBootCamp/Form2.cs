@@ -13,6 +13,10 @@ namespace SmartFactoryBootCamp
     public partial class Form2 : Form
     {
 
+        Random r = new Random();
+        int use_win = 0;
+        int computer_win = 0;
+        string[] match = { "가위", "바위", "보" };
         public Form2()
         {
             InitializeComponent();
@@ -24,14 +28,10 @@ namespace SmartFactoryBootCamp
 
         int computerRSP()
         {
-            Random r = new Random();
             int x = r.Next(0, 3);
             return x;
         }
-        int use_win = 0;
-        int computer_win = 0;
-        string[] match = { "가위", "바위", "보" };
-
+        
         private void Match(int idx, int computer)
         {
             if (idx == 0 && computer == 2)
@@ -59,14 +59,13 @@ namespace SmartFactoryBootCamp
                 computer_win++;
             }
             resultBox.Text += "사용자: " + match[idx] + " 컴퓨터: " + match[computer] + " | 점수 사용자: " + use_win.ToString() + " 컴퓨터: " + computer_win.ToString()+ "\r\n";
-            
             if (use_win == 3 || computer_win == 3)
             {
                 if(use_win == 3 && computer != 3)
                 {
                     resultBox.Text += "사용자 승리\r\n";
                 }
-                else if(use_win != 3 || computer_win == 3)
+                else if(use_win != 3 && computer_win == 3)
                 {
                     resultBox.Text += "컴퓨터 승리\r\n";
                 }
