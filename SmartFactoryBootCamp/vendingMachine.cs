@@ -43,7 +43,10 @@ namespace SmartFactoryBootCamp
             this.theCurrentStock = 0;
             this.theCurrentCash = 0;
         }
+        ~vendingMachine()
+        {
 
+        }
         // 현금, 카드 구분 후 구매 이력에 저장
         void distinguish(bool cashOrCard, int cost)
         {

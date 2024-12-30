@@ -17,4 +17,11 @@ namespace SmartFactoryBootCamp
             InitializeComponent();
         }
     }
+    partial class vendingMachine
+    {
+        public void testParitial()
+        {
+            MessageBox.Show("paritial 클래스...");
+        }
+    }
 }
