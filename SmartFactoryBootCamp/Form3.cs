@@ -18,13 +18,12 @@ namespace SmartFactoryBootCamp
         {
             InitializeComponent();
 
-            NPC npc1 = new NPC("마을 주민", "주민", 30, 15);
-            Monster monster = new Monster("괴물", "Slime", 500, 20);
-            Player pl1 = new Player("용사", "fighter", 100, 80);
+            Character.Character new1 = new Character.NPC("NPC","마을 주민", "주민", 30, 15);
+            Character.Character new2 = new Character.Monster("Monster", "괴물", "Slime", 500, 20);
+            Character.Character new3 = new Character.Player("Player", "용사", "fighter", 100, 80);
 
-            fight f1 = new fight(pl1.playrespone(), monster.Monsterrespone());
-            fight f2 = new fight(monster.Monsterrespone(), npc1.NPCrespone());
-            //fight f3 = new fight(monster.Monsterrespone(), .NPCrespone());
+            fight f1 = new fight(((Character.NPC)new1).NPCrespone(), ((Character.Monster)new2).Monsterrespone());
+            fight f2 = new fight(((Character.Monster)new2).Monsterrespone(), ((Character.Player)new3).playrespone());
 
             MessageBox.Show(f1.sendResult().ToString());
             MessageBox.Show(f2.sendResult().ToString());

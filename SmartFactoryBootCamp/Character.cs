@@ -18,8 +18,19 @@ namespace Character
     }
     public class Character // 부모 클래스
     {
-
-        public bool makCharacter(string type, string job)
+        CharacterData data = new CharacterData();
+        public Character(string type, string name, string job, int HP, int Attack)
+        {
+            if(this.makCharacter(type, job))
+            {
+                this.data.type = type;
+                this.data.name = name;
+                this.data.job = job;
+                this.data.HP = HP;
+                this.data.Attack = Attack;
+            }
+        }
+        bool makCharacter(string type, string job)
         {
             switch (type)
             {
@@ -44,18 +55,16 @@ namespace Character
     public class NPC : Character
     {
         CharacterData npcdata = new CharacterData();
-        Character npc = new Character();
 
-        public NPC(string name, string job, int HP, int Attack)
+        public NPC(string type, string name, string job, int HP, int Attack) : base(type, name, job, HP, Attack)
         {
-            if (npc.makCharacter("NPC", job))
-            {
-                this.npcdata.type = "NPC";
-                this.npcdata.name = name;
-                this.npcdata.job = job;
-                this.npcdata.HP = HP;
-                this.npcdata.Attack = Attack;
-            }
+
+            this.npcdata.type = "NPC";
+            this.npcdata.name = name;
+            this.npcdata.job = job;
+            this.npcdata.HP = HP;
+            this.npcdata.Attack = Attack;
+
         }
 
         public CharacterData NPCrespone()
@@ -67,17 +76,15 @@ namespace Character
     public class Player : Character
     {
         CharacterData Playerdata = new CharacterData();
-        Character player = new Character();
-        public Player(string name, string job, int HP, int Attack)
+        public Player(string type, string name, string job, int HP, int Attack) : base("Player", name, job, HP, Attack)
         {
-            if (player.makCharacter("Player", job))
-            {
-                this.Playerdata.type = "Player";
-                this.Playerdata.name = name;
-                this.Playerdata.job = job;
-                this.Playerdata.HP = HP;
-                this.Playerdata.Attack = Attack;
-            }
+
+            this.Playerdata.type = "Player";
+            this.Playerdata.name = name;
+            this.Playerdata.job = job;
+            this.Playerdata.HP = HP;
+            this.Playerdata.Attack = Attack;
+
         }
 
         public CharacterData playrespone()
@@ -89,19 +96,17 @@ namespace Character
     public class Monster : Character
     {
         CharacterData Monsterdata = new CharacterData();
-        Character monster = new Character();
 
-        public Monster(string name, string job, int HP, int Attack)
+        public Monster(string type, string name, string job, int HP, int Attack) : base("Monster", name, job, HP, Attack)
         {
-            if (monster.makCharacter("Player", job))
-            {
-                this.Monsterdata.type = "Monster";
-                this.Monsterdata.name = name;
-                this.Monsterdata.job = job;
-                this.Monsterdata.HP = HP;
-                this.Monsterdata.Attack = Attack;
-            }
-        }
+
+            this.Monsterdata.type = "Monster";
+            this.Monsterdata.name = name;
+            this.Monsterdata.job = job;
+            this.Monsterdata.HP = HP;
+            this.Monsterdata.Attack = Attack;
+        }    
+        
 
         public CharacterData Monsterrespone()
         {
