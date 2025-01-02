@@ -4,13 +4,14 @@ using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace Character
 {
     public struct CharacterData
     {
-        public String type;
+        public string type;
         public string name; // 이름
         public string job; // 직업
         public int HP; // 체력
@@ -29,6 +30,9 @@ namespace Character
                 this.data.HP = HP;
                 this.data.Attack = Attack;
             }
+        }
+        public virtual void Talk()
+        {
         }
         bool makCharacter(string type, string job)
         {
@@ -49,6 +53,21 @@ namespace Character
                 default:
                     return false;
             }
+        }
+
+        // 레벨에 따라서 무기 지급
+
+        public void levelUP()
+        {
+            MessageBox.Show(this.data.name + " 뭐든 입력해줘");
+        }
+        public void levelUP(int level)
+        {
+            MessageBox.Show(this.data.name + " 레벨 업!");
+        }
+        public void levelUP(int level, int hp)
+        { 
+            MessageBox.Show(this.data.name + " 레벨 업, 체력 업");
         }
     }
 
@@ -71,6 +90,12 @@ namespace Character
         {
             return this.npcdata;
         }
+        public override void Talk()
+        {
+            MessageBox.Show("나는 주민이야");
+        }
+
+
     }
 
     public class Player : Character
@@ -91,6 +116,11 @@ namespace Character
         {
             return this.Playerdata;
         }
+        public override void Talk()
+        {
+            MessageBox.Show("나는 용사야");
+        }
+
     }
 
     public class Monster : Character
@@ -112,5 +142,10 @@ namespace Character
         {
             return this.Monsterdata;
         }
+        public override void Talk()
+        {
+            MessageBox.Show("나는 괴물이다");
+        }
+
     }
 }
