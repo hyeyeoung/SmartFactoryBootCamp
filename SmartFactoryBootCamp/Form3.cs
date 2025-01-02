@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,67 +15,75 @@ namespace SmartFactoryBootCamp
 {
     public partial class Form3 : Form
     {
-        public void fillNum(ref int [] arr)
+        void readFileAndSaveArr(out int[] arr, string route)
         {
-            for (int i = 0; i < arr.Length; i++) 
-            {
-                arr[i] = i + 1;
-            }
-        }
+            arr = new int[5];
+            string []readResult;
+            string content = "";
 
-        public void fillNum(out int[] arr, int n)
-        {
-            arr = new int[n];
-            for(int i = 0; i < n; i++)
+            try
             {
-                arr[i] = i + 1;
+                content = File.ReadAllText(route);
+            }
+            catch (DirectoryNotFoundException)
+            {
+                MessageBox.Show("경로를 다시 입력해주세요");
+            }
+            catch (FileNotFoundException)
+            {
+                MessageBox.Show("파일을 못 찾았습니다.");
+            }
+            finally{
+                readResult = content.Split('\n'); // 파일 성공적으로 열면 파싱
+            }
+
+            for (int i = 0; i <= 5; i++)
+            {
+
+                try
+                {
+                    arr[i] = int.Parse(readResult[i]);
+                }
+                catch (IndexOutOfRangeException)
+                {
+                    MessageBox.Show("i 범위가 너무 넓음 " + i.ToString() + " i는 무시!");
+                }
+                catch (Exception ex)
+                {
+                    arr[i] = -1;
+                }
+               
             }
         }
         public Form3()
         {
             InitializeComponent();
-            //Character.Character new1 = new Character.NPC("NPC","마을 주민", "주민", 30, 15);
-            //Character.Character new2 = new Character.Monster("Monster", "괴물", "slime", 500, 20);
-            //Character.Character new3 = new Character.Player("Player", "용사", "fighter", 100, 80);
-
-            //new1.Talk();
-            //new2.Talk();
-            //new3.Talk();
-
-            //fight f1 = new fight(((Character.NPC)new1).NPCrespone(), ((Character.Monster)new2).Monsterrespone());
-            //fight f2 = new fight(((Character.Monster)new2).Monsterrespone(), ((Character.Player)new3).playrespone());
-
-            //MessageBox.Show("첫 번째 라운드: " + f1.sendResult().ToString());
-            //MessageBox.Show("두 번째 라운드: " + f2.sendResult().ToString());
-
-            //new1.levelUP();
-            //new2.levelUP(20);
-            //new3.levelUP(20, 30);
-
-            // ref 사용
-            int[] arr1 = new int[10];
-            fillNum(ref arr1);
-            textBox1.Text = "";
-            foreach (int i in arr1)
-            {
-                textBox1.Text += i;
-            }
-            textBox1.Text += "\r\n";
-            
-            // out 사용
-            int[] arr2;
-            fillNum(out arr2, 10);
-            foreach (int i in arr2)
-            {
-                textBox1.Text += i;
-            }
-            textBox1.Text += "\r\n";
+           
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            // 1번 ref
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string fileroute = textBox2.Text;
+            int [] arr;
+            readFileAndSaveArr(out arr, fileroute);
+
+            textBox2.Text = "";
+            foreach(int i in arr)
+            {
+                if(i == -1)
+                {
+                    textBox1.Text += "정수 변환 실패\r\n";
+                }
+                else
+                {
+                    textBox1.Text += (i.ToString() + "\r\n");
+                }
+            }
         }
     }
 }
