@@ -15,73 +15,85 @@ namespace SmartFactoryBootCamp
 {
     public partial class Form3 : Form
     {
-        void readFileAndSaveArr(out int[] arr, string route)
-        {
-            arr = new int[5];
-            string []readResult;
-            string content = "";
+        string FilePath = "";
+        string fileContent = "";
 
-            try
-            {
-                content = File.ReadAllText(route);
-            }
-            catch (DirectoryNotFoundException)
-            {
-                MessageBox.Show("경로를 다시 입력해주세요");
-            }
-            catch (FileNotFoundException)
-            {
-                MessageBox.Show("파일을 못 찾았습니다.");
-            }
-            finally{
-                readResult = content.Split('\n'); // 파일 성공적으로 열면 파싱
-            }
-
-            for (int i = 0; i <= 5; i++)
-            {
-
-                try
-                {
-                    arr[i] = int.Parse(readResult[i]);
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    MessageBox.Show("i 범위가 너무 넓음 " + i.ToString() + " i는 무시!");
-                }
-                catch (Exception ex)
-                {
-                    arr[i] = -1;
-                }
-               
-            }
-        }
+        IDictionary<string, int?> idPw = new Dictionary<string, int?>(); // id, 비번
+        IDictionary<string, int?> idPhone = new Dictionary<string, int?>(); // id, 전번
         public Form3()
         {
             InitializeComponent();
            
+
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        private void OpenFile_Click(object sender, EventArgs e)
         {
-            
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-            string fileroute = textBox2.Text;
-            int [] arr;
-            readFileAndSaveArr(out arr, fileroute);
-
-            textBox2.Text = "";
-            foreach(int i in arr)
+            OpenFileDialog file = new OpenFileDialog();
+            file.Filter = "txt files (*.txt)|*.txt";
+            if (file.ShowDialog() == DialogResult.OK)
             {
-                if(i == -1)
+                FilePath = file.FileName; // 파일 경로 가져오기
+                var fileStream = file.OpenFile();
+
+                using (StreamReader reader = new StreamReader(fileStream))
                 {
-                    textBox1.Text += "정수 변환 실패\r\n";
+                    fileContent = reader.ReadToEnd();
+                }
+
+                // 파싱
+                if(fileContent.Length > 0)
+                {
+                    string[] arr = fileContent.Split('\n');
+
+                    for(int i = 0; i < arr.Length; i++)
+                    {
+                        string [] data = arr[i].Split(',');
+                        idPw.Add(data[0], int.Parse(data[1]));
+
+                        if (data.Length > 2)
+                            idPhone.Add(data[0], int.Parse(data[2]));
+                        else
+                            idPhone.Add(data[0], null); // null 기입
+                    }
+                }
+
+            }
+        }
+        // login
+        private void loginButton_Click(object sender, EventArgs e)
+        {
+            if(ID.Text.Length < 0 || PW.Text.Length < 0)
+            {
+                MessageBox.Show("아이디와 비밀번호를 입력해주세요");
+            }
+            else
+            {
+                if(idPw.Count > 0 && idPhone.Count > 0)
+                {
+                    if(idPw.TryGetValue(ID.Text, out int? value))
+                    {
+                        if (idPw[ID.Text] == int.Parse(PW.Text))
+                        {
+                            if (idPhone[ID.Text] != null)
+                            {
+                                MessageBox.Show($"id: {ID.Text} \r\npw : {PW.Text} \r\nPhone : {idPhone[ID.Text]} ");
+                            }
+                            else
+                            {
+                                MessageBox.Show($"id: {ID.Text} \r\npw : {PW.Text}");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // 로그인 실패
+                        MessageBox.Show("로그인 실패");
+                    }
                 }
                 else
                 {
-                    textBox1.Text += (i.ToString() + "\r\n");
+                    MessageBox.Show("계정 정보를 먼저 업로드해주세요");
                 }
             }
         }
