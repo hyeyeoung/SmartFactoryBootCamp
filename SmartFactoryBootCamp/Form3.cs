@@ -18,8 +18,8 @@ namespace SmartFactoryBootCamp
         string FilePath = "";
         string fileContent = "";
 
-        IDictionary<string, int?> idPw = new Dictionary<string, int?>(); // id, 비번
-        IDictionary<string, int?> idPhone = new Dictionary<string, int?>(); // id, 전번
+        IDictionary<string, string> idPw = new Dictionary<string, string>(); // id, 비번
+        IDictionary<string, string> idPhone = new Dictionary<string, string>(); // id, 전번
         public Form3()
         {
             InitializeComponent();
@@ -49,10 +49,10 @@ namespace SmartFactoryBootCamp
                     for(int i = 0; i < arr.Length; i++)
                     {
                         string [] data = arr[i].Split(',');
-                        idPw.Add(data[0], int.Parse(data[1]));
+                        idPw.Add(data[0], data[1]);
 
                         if (data.Length > 2)
-                            idPhone.Add(data[0], int.Parse(data[2]));
+                            idPhone.Add(data[0], data[2]);
                         else
                             idPhone.Add(data[0], null); // null 기입
                     }
@@ -71,9 +71,9 @@ namespace SmartFactoryBootCamp
             {
                 if(idPw.Count > 0 && idPhone.Count > 0)
                 {
-                    if(idPw.TryGetValue(ID.Text, out int? value))
+                    if(idPw.TryGetValue(ID.Text, out string value))
                     {
-                        if (idPw[ID.Text] == int.Parse(PW.Text))
+                        if (idPw[ID.Text] == PW.Text)
                         {
                             if (idPhone[ID.Text] != null)
                             {
