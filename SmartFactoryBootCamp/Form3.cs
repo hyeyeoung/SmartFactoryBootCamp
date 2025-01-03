@@ -88,7 +88,7 @@ namespace SmartFactoryBootCamp
                     else
                     {
                         // 로그인 실패
-                        MessageBox.Show("로그인 실패");
+                        MessageBox.Show("로그인 실패\r\n존재하지 않는 아이디입니다.");
                     }
                 }
                 else
