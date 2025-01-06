@@ -23,8 +23,6 @@ namespace SmartFactoryBootCamp
         public Form3()
         {
             InitializeComponent();
-           
-
         }
 
         private void OpenFile_Click(object sender, EventArgs e)
