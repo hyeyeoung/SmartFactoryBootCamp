@@ -74,5 +74,10 @@ namespace SmartFactoryBootCamp
                 this.worker.RunWorkerAsync();
             }
         }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            listBox1.Items.Clear();
+        }
     }
 }
