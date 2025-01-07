@@ -8,76 +8,98 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using Character;
 
 namespace SmartFactoryBootCamp
 {
     public partial class Form5 : Form
     {
-        BackgroundWorker worker;
-        string[] allfiles = new string[101];
+        static Random random = new Random(); // 랜덤 객체 선언
+        static double[] arr = new double[6];
+        static int num = 0;
+        static double totalTime = 0;
         public Form5()
         {
             InitializeComponent();
-            listBox1.HorizontalScrollbar = true;
-
-            this.worker = new BackgroundWorker();
-            this.worker.WorkerReportsProgress = true;
-            this.worker.WorkerSupportsCancellation = true;
-            
-            this.worker.DoWork += new DoWorkEventHandler(DoWork_SerchFile);
-            this.worker.ProgressChanged += new ProgressChangedEventHandler(DoWorker_ProgressChanged);
-            this.worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(DoWorker_RunWorkerCompleted);
         }
-        void DoWork_SerchFile(object sender, DoWorkEventArgs e)
+        void Update_Score(object i) // 차량을 움직임
         {
-            string path = textBox1.Text;
-            string file = "*.*";
-            Array.Clear(this.allfiles, 0, this.allfiles.Length);
-
-            if (textBox2.Text != "")
+            double start = 0;
+            while(start <= 10)
             {
-                file = textBox2.Text;
-            }
-            try
-            {
-                this.allfiles = Directory.GetFiles(path, file, SearchOption.AllDirectories);
-                for (int i = 0; i < this.allfiles.Length; i++)
+                Thread.Sleep(300);
+                double x = random.NextDouble();
+                x = Math.Round(x, 3);
+                if (textBox1.InvokeRequired)
                 {
-                    this.worker.ReportProgress(i);
+                    // Invoke를 발생시켜서 간접적으로 컨트롤을 업데이트
+                    textBox1.Invoke(new MethodInvoker(() =>
+                    {
+                        textBox1.Text += $"{(int)i}번째 선수 {x}만큼 움직임\r\n";
+                    }));
                 }
+                else
+                {
+                    textBox1.Text += $"{(int)i}번째 선수 {x}만큼 움직임\r\n";
+                }
+                start += x;
+                totalTime += x;
+                
             }
-            catch (Exception ex)
+            if (textBox1.InvokeRequired)
             {
-                // 작업 종료 등록, 파일 경로를 못 찾거나 할 때?
-                e.Cancel = true;
-            }
-        }
-        void DoWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            listBox1.Items.Add(this.allfiles[e.ProgressPercentage]);
-        }
-        void DoWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                MessageBox.Show("다시 입력해주세요");
+                // Invoke를 발생시켜서 간접적으로 컨트롤을 업데이트
+                textBox1.Invoke(new MethodInvoker(() =>
+                {
+                    textBox1.Text += $"{(int)i}번째 선수 {totalTime}만에 들어옴!\r\n";
+                }));
             }
             else
             {
-                MessageBox.Show("작업 완료");
+                textBox1.Text += $"{(int)i}번째 선수 {totalTime}만에 들어옴!\r\n";
+            }
+            arr[(int)i] = totalTime;
+
+            num++;
+            if (num == 5)
+            {
+                //MessageBox.Show("Done!");
+                string r = "";
+                for (int k = 1; k <= 5; k++)
+                    r += $"{(int)k} 번째 : {arr[(int)k]}\r\n";
+                MessageBox.Show(r);
             }
         }
-        private void button1_Click(object sender, EventArgs e)
+        void Check()
         {
-            if (!this.worker.IsBusy)
-            {
-                this.worker.RunWorkerAsync();
-            }
+            
+        }
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
+            // 변수를 쓰레드에 전달
+            Thread player1 = new Thread(() => Update_Score(1));
+            Thread player2 = new Thread(() => Update_Score(2));
+            Thread player3 = new Thread(() => Update_Score(3));
+            Thread player4 = new Thread(() => Update_Score(4));
+            Thread player5 = new Thread(() => Update_Score(5));
+
+            player1.Start();
+            player2.Start();
+            player3.Start();
+            player4.Start();
+            player5.Start();
+
+        }
+
+        private void Form5_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
